@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahal Mo Ba Ako? ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            touch-action: manipulation;
+        }
+        .font-fredoka {
+            font-family: 'Fredoka', cursive;
+        }
+        
+        /* Floating Heart Canvas */
+        #heartCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* Pulse animation for Yes button */
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+        }
+        .pulse-heart {
+            animation: subtlePulse 1.5s infinite ease-in-out;
+        }
+
+        /* Bouncy transitions */
+        .bounce-transition {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Floating background elements */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+        .floating-bg {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-100 via-rose-200 to-red-200 min-h-screen flex items-center justify-center p-4 overflow-hidden relative select-none">
+
+    <!-- Canvas for Floating Heart Confetti Shower -->
+    <canvas id="heartCanvas"></canvas>
+
+    <!-- Decorative Background Floating Hearts -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+        <div class="floating-bg absolute top-10 left-10 text-4xl">💖</div>
+        <div class="floating-bg absolute top-20 right-16 text-5xl" style="animation-delay: 1s;">💗</div>
+        <div class="floating-bg absolute bottom-12 left-16 text-6xl" style="animation-delay: 2s;">💕</div>
+        <div class="floating-bg absolute bottom-20 right-10 text-4xl" style="animation-delay: 1.5s;">🌸</div>
+    </div>
+
+    <!-- Main Card Container -->
+    <main class="relative z-10 w-full max-w-md bg-white/80 backdrop-blur-md border border-pink-200 rounded-3xl p-6 sm:p-8 shadow-2xl text-center transition-all duration-500">
+        
+        <!-- Interactive Question Section -->
+        <div id="questionSection" class="flex flex-col items-center">
+            <!-- Cute SVG Mascot Container -->
+            <div id="mascot" class="w-32 h-32 sm:w-40 sm:h-40 mb-4 transition-transform duration-300">
+                <!-- Cute Bear SVG -->
+                <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-md">
+                    <!-- Ears -->
+                    <circle cx="60" cy="50" r="22" fill="#F4A261" />
+                    <circle cx="60" cy="50" r="12" fill="#E76F51" />
+                    <circle cx="140" cy="50" r="22" fill="#F4A261" />
+                    <circle cx="140" cy="50" r="12" fill="#E76F51" />
+                    <!-- Head -->
+                    <circle cx="100" cy="100" r="65" fill="#F4A261" />
+                    <!-- Cheeks -->
+                    <circle cx="65" cy="115" r="10" fill="#FF8FA3" opacity="0.7" />
+                    <circle cx="135" cy="115" r="10" fill="#FF8FA3" opacity="0.7" />
+                    <!-- Snout -->
+                    <ellipse cx="100" cy="115" rx="22" ry="16" fill="#FFF" />
+                    <ellipse cx="100" cy="108" rx="8" ry="6" fill="#4A3E3D" />
+                    <path d="M 100 114 Q 95 122 90 120 M 100 114 Q 105 122 110 120" stroke="#4A3E3D" stroke-width="3" fill="none" stroke-linecap="round" />
+                    <!-- Eyes (Shy/Happy) -->
+                    <path d="M 68 92 Q 78 82 88 92" stroke="#4A3E3D" stroke-width="4.5" fill="none" stroke-linecap="round" />
+                    <path d="M 112 92 Q 122 82 132 92" stroke="#4A3E3D" stroke-width="4.5" fill="none" stroke-linecap="round" />
+                    <!-- Big Heart in Paws -->
+                    <path d="M 100 160 C 100 160 70 130 70 110 C 70 95 85 90 100 105 C 115 90 130 95 130 110 C 130 130 100 160 100 160 Z" fill="#FF4D6D" class="pulse-heart" />
+                </svg>
+            </div>
+
+            <!-- Question Header -->
+            <h1 class="font-fredoka text-3xl sm:text-4xl text-rose-600 font-bold tracking-wide mb-2 leading-tight">
+                Padangat mo ba ako?? 🥺❤️
+            </h1>
+            
+            <p id="subText" class="text-rose-400 font-semibold text-sm sm:text-base mb-8 h-6 transition-all duration-300">
+                Pumili ka sa baba please...
+            </p>
+
+            <!-- Buttons Grid Container -->
+            <div id="buttonArea" class="relative w-full min-h-[120px] flex items-center justify-center gap-4 sm:gap-6">
+                <!-- YES BUTTON -->
+                <button id="yesBtn" onclick="handleYesClick()" 
+                    class="pulse-heart bounce-transition bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-fredoka text-xl sm:text-2xl px-8 py-3 sm:px-10 sm:py-4 rounded-full shadow-lg shadow-pink-300 transform active:scale-95 flex items-center gap-2 z-20 cursor-pointer">
+                    <span>YES</span>
+                    <span class="text-2xl">😍</span>
+                </button>
+
+                <!-- NO BUTTON (Dynamically Movable) -->
+                <button id="noBtn" 
+                    class="bounce-transition bg-gray-200 hover:bg-gray-300 text-gray-700 font-fredoka text-xl sm:text-2xl px-8 py-3 sm:px-10 sm:py-4 rounded-full shadow-md z-10 cursor-pointer select-none">
+                    <span>NO</span>
+                    <span class="text-xl">🙈</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Success Message Section (Initially Hidden) -->
+        <div id="successSection" class="hidden flex-col items-center py-4">
+            <!-- Happy Excited Mascot -->
+            <div class="w-36 h-36 sm:w-44 sm:h-44 mb-4">
+                <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-lg">
+                    <!-- Ears -->
+                    <circle cx="60" cy="50" r="22" fill="#F4A261" />
+                    <circle cx="60" cy="50" r="12" fill="#E76F51" />
+                    <circle cx="140" cy="50" r="22" fill="#F4A261" />
+                    <circle cx="140" cy="50" r="12" fill="#E76F51" />
+                    <!-- Head -->
+                    <circle cx="100" cy="100" r="65" fill="#F4A261" />
+                    <!-- Cheeks -->
+                    <circle cx="60" cy="115" r="12" fill="#FF8FA3" />
+                    <circle cx="140" cy="115" r="12" fill="#FF8FA3" />
+                    <!-- Snout -->
+                    <ellipse cx="100" cy="115" rx="22" ry="16" fill="#FFF" />
+                    <ellipse cx="100" cy="108" rx="8" ry="6" fill="#4A3E3D" />
+                    <path d="M 90 120 Q 100 132 110 120" stroke="#4A3E3D" stroke-width="3" fill="none" stroke-linecap="round" />
+                    <!-- Joyful Sparkle Eyes -->
+                    <circle cx="75" cy="88" r="8" fill="#4A3E3D" />
+                    <circle cx="78" cy="85" r="3" fill="#FFF" />
+                    <circle cx="125" cy="88" r="8" fill="#4A3E3D" />
+                    <circle cx="128" cy="85" r="3" fill="#FFF" />
+                    <!-- Floating Hearts above -->
+                    <path d="M 60 40 C 60 40 45 25 45 15 C 45 5 55 2 60 12 C 65 2 75 5 75 15 C 75 25 60 40 60 40 Z" fill="#FF4D6D" />
+                    <path d="M 140 40 C 140 40 125 25 125 15 C 125 5 135 2 140 12 C 145 2 155 5 155 15 C 155 25 140 40 140 40 Z" fill="#FF4D6D" />
+                </svg>
+            </div>
+
+            <h2 class="font-fredoka text-3xl sm:text-4xl text-rose-600 font-extrabold mb-3 animate-bounce">
+                Yey! Padangat taka man boss! 🥰❤️
+            </h2>
+            <p class="text-rose-500 text-lg sm:text-xl font-bold mb-6">
+                Aram ko man na YES ang simbag mo babi! 💖✨
+            </p>
+
+        </div>
+    </main>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const subText = document.getElementById('subText');
+        const questionSection = document.getElementById('questionSection');
+        const successSection = document.getElementById('successSection');
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let evadeCount = 0;
+        let yesScale = 1;
+        let animationFrameId;
+        let hearts = [];
+
+        // Funny teaser messages when user tries to hit NO
+        const funnyTeasers = [
+            "Bawal pinduton ang No! 😜",
+            "Mag yes kana sana bab? 😂",
+            "Sabi ko na nga ba Yes eh! 🥰",
+            "Habulon mo kaya mo yan 🤪",
+            "Tistingon mo pa, mahuhuli mo rin! 🏃‍♂️",
+            "Ops! Buray nawara! ⚡",
+            "Mayo nang choice, mag YES ka na! ❤️"
+        ];
+
+        // Ensure Canvas Resizes properly
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // -------------------------------------------------------------
+        // UNTOUCHABLE "NO" BUTTON LOGIC
+        // -------------------------------------------------------------
+        function moveNoButton() {
+            evadeCount++;
+
+            // Increase size of YES button to make it extra inviting
+            yesScale += 0.12;
+            if (yesScale <= 2.2) {
+                yesBtn.style.transform = `scale(${yesScale})`;
+            }
+
+            // Playful feedback messages
+            const msgIndex = Math.min(evadeCount - 1, funnyTeasers.length - 1);
+            subText.textContent = funnyTeasers[msgIndex];
+            subText.classList.add('text-rose-600', 'font-bold');
+
+            // Set NO button to absolute positioning relative to window
+            noBtn.style.position = 'fixed';
+            
+            // Calculate random coordinates safely inside viewport with padding
+            const padding = 30;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+
+            const maxX = window.innerWidth - btnWidth - padding;
+            const maxY = window.innerHeight - btnHeight - padding;
+
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        }
+
+        // Trigger evasion on mouse hover AND touch start (for mobile devices)
+        noBtn.addEventListener('mouseenter', moveNoButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent accidental click touch on mobile
+            moveNoButton();
+        });
+
+        // Backup click block if someone manages to click fast
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+
+        // -------------------------------------------------------------
+        // YES BUTTON CLICK & CELEBRATION EFFECT
+        // -------------------------------------------------------------
+        function handleYesClick() {
+            // Play sweet chime audio synthesized via Web Audio API (No external sound file needed)
+            playCelebrationSound();
+
+            // Transition content screens
+            questionSection.classList.add('hidden');
+            successSection.classList.remove('hidden');
+            successSection.classList.add('flex');
+
+            // Hide the elusive NO button
+            noBtn.style.display = 'none';
+
+            // Start floating heart shower effect
+            startHeartShower();
+        }
+
+        // -------------------------------------------------------------
+        // FLOATING HEART PARTICLES CANVAS ENGINE
+        // -------------------------------------------------------------
+        class Heart {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 50;
+                this.size = Math.random() * 20 + 15; // Heart radius size
+                this.speedY = Math.random() * 3 + 2;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.opacity = Math.random() * 0.7 + 0.3;
+                this.color = `hsl(${Math.random() * 40 + 330}, 100%, ${Math.random() * 20 + 60}%)`;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.05;
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += Math.sin(this.y * 0.02) + this.speedX;
+                this.rotation += this.rotationSpeed;
+
+                if (this.y < -50) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+
+                // Draw heart shape path
+                ctx.beginPath();
+                const topCurveHeight = this.size * 0.3;
+                ctx.moveTo(0, topCurveHeight);
+                ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
+                ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size);
+                ctx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
+                ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        function startHeartShower() {
+            hearts = [];
+            const heartCount = 60; // Total floating hearts
+            for (let i = 0; i < heartCount; i++) {
+                const heart = new Heart();
+                // Stagger initial Y position for immediate full screen effect
+                heart.y = Math.random() * canvas.height;
+                hearts.push(heart);
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                hearts.forEach(heart => {
+                    heart.update();
+                    heart.draw();
+                });
+                animationFrameId = requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // -------------------------------------------------------------
+        // WEB AUDIO API SOUND SYNTHESIS
+        // -------------------------------------------------------------
+        function playCelebrationSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
+
+                // Joyful arpeggio notes (C5, E5, G5, C6)
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, index) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.12);
+
+                    gain.gain.setValueAtTime(0, audioCtx.currentTime + index * 0.12);
+                    gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + index * 0.12 + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + index * 0.12 + 0.4);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+
+                    osc.start(audioCtx.currentTime + index * 0.12);
+                    osc.stop(audioCtx.currentTime + index * 0.12 + 0.45);
+                });
+            } catch (e) {
+                // Audio Context might be restricted or unsupported, silent fallback
+            }
+        }
+
+        // -------------------------------------------------------------
+        // RESET PAGE LOGIC
+        // -------------------------------------------------------------
+        function resetPage() {
+            cancelAnimationFrame(animationFrameId);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            evadeCount = 0;
+            yesScale = 1;
+
+            yesBtn.style.transform = 'scale(1)';
+            noBtn.style.display = 'inline-block';
+            noBtn.style.position = 'static';
+            noBtn.style.left = 'auto';
+            noBtn.style.top = 'auto';
+
+            subText.textContent = "Pumili ka sa baba please...";
+            subText.classList.remove('text-rose-600', 'font-bold');
+
+            successSection.classList.remove('flex');
+            successSection.classList.add('hidden');
+            questionSection.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
